@@ -1,35 +1,32 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const InventorySchema = new Schema(
+const VendorSchema = new Schema(
   {
-    item: {
-      //carlo rossi red
+    vendorName: {
       type: String,
       required: true,
-      maxLength: "200",
       unique: true,
+      maxLength: 700,
       trim: true,
     },
-    itemCode: {
-      //01-100
+    vendorAddress: {
       type: String,
       required: true,
-      maxLength: 6,
-      unique: true,
+      maxLength: 1000,
       trim: true,
     },
-    itemQuantity: {
-      type: Number,
-      trim: true,
-    },
-    unitOfMeasure: {
+    vendorCode: {
       type: String,
-      enum: ["BTL", "CTN", "PCS"],
+      trim: true,
+      unique: true,
+    },
+    phoneNumber: {
+      type: String,
       trim: true,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Inventory", InventorySchema);
+module.exports = mongoose.model("Vendor", VendorSchema);
