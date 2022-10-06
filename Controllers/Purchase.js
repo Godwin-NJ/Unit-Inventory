@@ -3,16 +3,38 @@ const { StatusCodes } = require("http-status-codes");
 const InventoryModel = require("../Models/InventoryModel");
 const vendorModel = require("../Models/VendorModel");
 
-// purchase from vendor
-//single purchase , multiple purchase
 const stockPurchase = async (req, res) => {
-  // check if item and vendor exist in respective tables
-  const { vendor, vendorItem, itemQuantity, unitOfMeasure } = req.body;
-  if (!vendor || !vendorItem || !itemQuantity || !unitOfMeasure) {
+  const { vendor, vendorItem, itemQuantity, unitOfMeasure, unitPrice } =
+    req.body;
+  if (!vendor || !vendorItem || !itemQuantity || !unitOfMeasure || !unitPrice) {
     console.log("empty field detected");
+    return;
   }
-  const Items = await Purchase.create(req.body);
-  res.status(StatusCodes.CREATED).json(Items);
+
+  const Items = await Purchase.create([req.body]);
+  const vendorUserModel = await vendorModel.find({});
+  const inventoryModel = await InventoryModel.find({});
+  const suppliedStockByVendor = [];
+  // loop thru models
+  for (const stock of Items) {
+    const vendorUser = vendorUserModel.find((ved) =>
+      stock.vendor.equals(ved._id)
+    );
+    const inventory_Stock = inventoryModel.find((inv) =>
+      stock.vendorItem.equals(inv._id)
+    );
+    const itemInfo = Items[0];
+    suppliedStockByVendor.push({
+      vendor: vendorUser.vendorName,
+      vendorItem: inventory_Stock.item,
+      itemQuantity: itemInfo.itemQuantity,
+      unitOfMeasure: itemInfo.unitOfMeasure,
+      unitPrice: itemInfo.unitPrice,
+      invoiceNumber: itemInfo.invoiceNumber,
+      Id: itemInfo._id,
+    });
+  }
+  res.status(StatusCodes.CREATED).json(suppliedStockByVendor);
 };
 
 const AllPurchaseDone = async (req, res) => {
@@ -37,6 +59,8 @@ const AllPurchaseDone = async (req, res) => {
         vendorItem: InventoryStock.item,
         itemQuantity: purchasedItem.itemQuantity,
         unitOfMeasure: purchasedItem.unitOfMeasure,
+        unitPrice: purchasedItem.unitPrice,
+        invoiceNumber: purchasedItem.invoiceNumber,
       });
     }
   });

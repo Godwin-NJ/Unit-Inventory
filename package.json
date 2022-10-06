@@ -26,6 +26,7 @@
     "http-status-codes": "^2.2.0",
     "mongoose": "^6.6.3",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "uuid": "^9.0.0"
   }
 }
