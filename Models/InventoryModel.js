@@ -19,10 +19,10 @@ const InventorySchema = new Schema(
       unique: true,
       trim: true,
     },
-    itemQuantity: {
-      type: Number,
-      trim: true,
-    },
+    // itemQuantity: {
+    //   type: Number,
+    //   trim: true,
+    // },
     unitOfMeasure: {
       type: String,
       enum: ["BTL", "CTN", "PCS"],

@@ -4,70 +4,66 @@ const InventoryModel = require("../Models/InventoryModel");
 const vendorModel = require("../Models/VendorModel");
 
 const stockPurchase = async (req, res) => {
-  const { vendor, vendorItem, itemQuantity, unitOfMeasure, unitPrice } =
-    req.body;
-  if (!vendor || !vendorItem || !itemQuantity || !unitOfMeasure || !unitPrice) {
-    console.log("empty field detected");
+  const { purchase, vendor } = req.body;
+
+  for (const value of purchase) {
+    const { vendorItem, itemQuantity, unitOfMeasure, unitPrice } = value;
+
+    if (!vendorItem || !itemQuantity || !unitOfMeasure || !unitPrice) {
+      return;
+    }
+  }
+
+  const vendorUserModel = await vendorModel.findOne({ _id: vendor });
+
+  if (!vendorUserModel) {
     return;
   }
 
-  const Items = await Purchase.create([req.body]);
-  const vendorUserModel = await vendorModel.find({});
-  const inventoryModel = await InventoryModel.find({});
-  const suppliedStockByVendor = [];
-  // loop thru models
-  for (const stock of Items) {
-    const vendorUser = vendorUserModel.find((ved) =>
-      stock.vendor.equals(ved._id)
-    );
-    const inventory_Stock = inventoryModel.find((inv) =>
-      stock.vendorItem.equals(inv._id)
-    );
-    const itemInfo = Items[0];
-    suppliedStockByVendor.push({
-      vendor: vendorUser.vendorName,
-      vendorItem: inventory_Stock.item,
-      itemQuantity: itemInfo.itemQuantity,
-      unitOfMeasure: itemInfo.unitOfMeasure,
-      unitPrice: itemInfo.unitPrice,
-      invoiceNumber: itemInfo.invoiceNumber,
-      Id: itemInfo._id,
+  for (const stock of purchase) {
+    const inventoryUserModel = await InventoryModel.findOne({
+      _id: stock.vendorItem,
     });
+    if (!inventoryUserModel) {
+      return;
+    }
   }
-  res.status(StatusCodes.CREATED).json(suppliedStockByVendor);
+
+  const Items = await Purchase.create(req.body);
+  res.status(StatusCodes.CREATED).json(Items);
 };
 
 const AllPurchaseDone = async (req, res) => {
   const items = await Purchase.find({});
-  const vendor = await vendorModel.find({});
-  const inventory = await InventoryModel.find({});
+  // const vendor = await vendorModel.find({});
+  // const inventory = await InventoryModel.find({});
 
-  let populatedStock = [];
-  items.forEach((purchasedItem) => {
-    let VendorName = vendor.find((vendorItem) =>
-      purchasedItem.vendor.equals(vendorItem._id)
-    );
-    // console.log(VendorName, "forVendor");
-    let InventoryStock = inventory.find((InventoryItem) =>
-      purchasedItem.vendorItem.equals(InventoryItem._id)
-    );
-    // console.log(InventoryStock, "forInventory");
-    if (VendorName && InventoryStock) {
-      populatedStock.push({
-        id: purchasedItem._id,
-        vendor: VendorName.vendorName,
-        vendorItem: InventoryStock.item,
-        itemQuantity: purchasedItem.itemQuantity,
-        unitOfMeasure: purchasedItem.unitOfMeasure,
-        unitPrice: purchasedItem.unitPrice,
-        invoiceNumber: purchasedItem.invoiceNumber,
-      });
-    }
-  });
-
-  res
-    .status(StatusCodes.OK)
-    .json({ populatedStock, count: populatedStock.length });
+  // let populatedStock = [];
+  // items.forEach((purchasedItem) => {
+  //   let VendorName = vendor.find((vendorItem) =>
+  //     purchasedItem.vendor.equals(vendorItem._id)
+  //   );
+  // console.log(VendorName, "forVendor");
+  // let InventoryStock = inventory.find((InventoryItem) =>
+  //   purchasedItem.vendorItem.equals(InventoryItem._id)
+  // );
+  // console.log(InventoryStock, "forInventory");
+  //   if (VendorName && InventoryStock) {
+  //     populatedStock.push({
+  //       id: purchasedItem._id,
+  //       vendor: VendorName.vendorName,
+  //       vendorItem: InventoryStock.item,
+  //       itemQuantity: purchasedItem.itemQuantity,
+  //       unitOfMeasure: purchasedItem.unitOfMeasure,
+  //       unitPrice: purchasedItem.unitPrice,
+  //       invoiceNumber: purchasedItem.invoiceNumber,
+  //     });
+  //   }
+  // });
+  res.status(StatusCodes.OK).json({ items, count: items.length });
+  // res
+  //   .status(StatusCodes.OK)
+  //   .json({ populatedStock, count: populatedStock.length });
 };
 
 const singlePurchase = async (req, res) => {

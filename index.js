@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const inventoryRoute = require("./Routes/inventoryRoute");
 const vendorRoute = require("./Routes/VendorRoute");
 const purchaseRoute = require("./Routes/PurchaseRoute");
+const customerRoute = require("./Routes/customerRoute");
+const salesRoute = require("./Routes/salesRoute");
 
 // middleware
 app.use(morgan("tiny"));
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/inventory", inventoryRoute);
 app.use("/api/v1/vendor", vendorRoute);
 app.use("/api/v1/purchase", purchaseRoute);
+app.use("/api/v1/customer", customerRoute);
+app.use("/api/v1/sales", salesRoute);
 
 const port = 3000;
 const connectApp = async () => {
