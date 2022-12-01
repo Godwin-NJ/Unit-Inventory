@@ -34,36 +34,14 @@ const stockPurchase = async (req, res) => {
 };
 
 const AllPurchaseDone = async (req, res) => {
-  const items = await Purchase.find({});
-  // const vendor = await vendorModel.find({});
-  // const inventory = await InventoryModel.find({});
+  const items = await Purchase.find({})
+    .populate({
+      path: "vendor",
+      select: "vendorName",
+    })
+    .populate({ path: "purchase.vendorItem", select: "item" });
 
-  // let populatedStock = [];
-  // items.forEach((purchasedItem) => {
-  //   let VendorName = vendor.find((vendorItem) =>
-  //     purchasedItem.vendor.equals(vendorItem._id)
-  //   );
-  // console.log(VendorName, "forVendor");
-  // let InventoryStock = inventory.find((InventoryItem) =>
-  //   purchasedItem.vendorItem.equals(InventoryItem._id)
-  // );
-  // console.log(InventoryStock, "forInventory");
-  //   if (VendorName && InventoryStock) {
-  //     populatedStock.push({
-  //       id: purchasedItem._id,
-  //       vendor: VendorName.vendorName,
-  //       vendorItem: InventoryStock.item,
-  //       itemQuantity: purchasedItem.itemQuantity,
-  //       unitOfMeasure: purchasedItem.unitOfMeasure,
-  //       unitPrice: purchasedItem.unitPrice,
-  //       invoiceNumber: purchasedItem.invoiceNumber,
-  //     });
-  //   }
-  // });
   res.status(StatusCodes.OK).json({ items, count: items.length });
-  // res
-  //   .status(StatusCodes.OK)
-  //   .json({ populatedStock, count: populatedStock.length });
 };
 
 const singlePurchase = async (req, res) => {

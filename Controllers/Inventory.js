@@ -29,15 +29,19 @@ const stockHolding = async (req, res) => {
   // This will eventually be matched by active property ,
   //which will be used to separate active and inactive stock
   const holding = await Inventory.aggregate([
-    { $project: { _id: 0, item: 1, itemCode: 1 } },
+    {
+      $project: {
+        item: 1,
+        itemCode: 1,
+        itemVolume: { unitOfMeasure: 1, quantity: 1 },
+      },
+    },
   ]);
 
-  console.log(holding, "holding");
+  // console.log(holding, "holding");
 
   if (!holding) {
-    // throw new Eroror
-    // console.log(err, "err");
-    return;
+    throw new BadRequestError("not found");
   }
   res.status(StatusCodes.OK).json(holding);
 };

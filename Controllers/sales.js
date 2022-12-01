@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const Sales = require("../Models/SalesModel");
+const { BadRequestError } = require("../Errors");
 
 const saleToCustomer = async (req, res) => {
   const { customerOrder, customer } = req.body;
@@ -18,8 +19,16 @@ const saleToCustomer = async (req, res) => {
 };
 
 const getAllSales = async (req, res) => {
-  const salesOrder = await Sales.find({});
-  res.status(StatusCodes.OK).json({ salesOrder });
+  const salesOrder = await Sales.find({})
+    .populate({
+      path: "customer",
+      select: "name",
+    })
+    .populate({ path: "customerOrder.stock", select: "item" });
+  if (!salesOrder) {
+    throw new BadRequestError("error in getting all sales");
+  }
+  res.status(StatusCodes.OK).json(salesOrder);
 };
 
 const getSingleSale = async (req, res) => {
