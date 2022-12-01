@@ -22,7 +22,13 @@ const getAllSales = async (req, res) => {
   res.status(StatusCodes.OK).json({ salesOrder });
 };
 
+const getSingleSale = async (req, res) => {
+  const singleSales = await Sales.findOne({ _id: req.params.id });
+  res.status(StatusCodes.OK).json(singleSales);
+};
+
 module.exports = {
   saleToCustomer,
   getAllSales,
+  getSingleSale,
 };
