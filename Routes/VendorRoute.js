@@ -6,8 +6,18 @@ const {
   getSingleVendor,
   updateVendorInfo,
 } = require("../Controllers/Vendor");
+const {
+  Authentication,
+  Authorization,
+} = require("../Middleware/authenticationMware");
 
-router.route("/").post(createVendor).get(getAllVendor);
-router.route("/:id").get(getSingleVendor).patch(updateVendorInfo);
+router
+  .route("/")
+  .post([Authentication, Authorization("admin")], createVendor)
+  .get(getAllVendor);
+router
+  .route("/:id")
+  .get([Authentication], getSingleVendor)
+  .patch([Authentication], updateVendorInfo);
 
 module.exports = router;

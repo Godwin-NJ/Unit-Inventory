@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
+require("express-async-errors");
 const express = require("express");
 const app = express();
 const connectDB = require("./connect");
@@ -10,6 +11,7 @@ const vendorRoute = require("./Routes/VendorRoute");
 const purchaseRoute = require("./Routes/PurchaseRoute");
 const customerRoute = require("./Routes/customerRoute");
 const salesRoute = require("./Routes/salesRoute");
+const authRouter = require("./Routes/userAuthRoute");
 const NotFoundMiddleware = require("./Middleware/notFound");
 const errorHandler = require("./Middleware/error-handlerMiddleware");
 
@@ -28,6 +30,7 @@ app.use("/api/v1/vendor", vendorRoute);
 app.use("/api/v1/purchase", purchaseRoute);
 app.use("/api/v1/customer", customerRoute);
 app.use("/api/v1/sales", salesRoute);
+app.use("/api/v1/user", authRouter);
 
 app.use(NotFoundMiddleware);
 app.use(errorHandler);

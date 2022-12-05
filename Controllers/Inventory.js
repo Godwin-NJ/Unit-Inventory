@@ -1,6 +1,6 @@
 const Inventory = require("../Models/InventoryModel");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError } = require("../Errors");
+const { BadRequestError, NotFoundError } = require("../Errors");
 const createProduct = async (req, res) => {
   // const { item, itemCode, unitOfMeasure , } = req.body;
   const stocks = await Inventory.create(req.body);
@@ -21,6 +21,9 @@ const getAllProduct = async (req, res) => {
 
 const getSingleproduct = async (req, res) => {
   const itemId = req.params.id;
+  if (!itemId) {
+    throw new NotFoundError("stock does not exist");
+  }
   const stockItem = await Inventory.findOne({ _id: itemId });
   res.status(StatusCodes.OK).json({ stockItem });
 };
