@@ -55,6 +55,7 @@ userSchema.method("createJWT", async function () {
       userID: this._id,
       userName: this.userName,
       email: this.email,
+      role: this.role,
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES }

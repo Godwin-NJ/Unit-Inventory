@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
   if (!token) {
     return;
   }
-  console.log(token, "token");
+  // console.log(token, "token");
   res.status(StatusCodes.OK).json({
     name: validUser.userName,
     email: validUser.email,

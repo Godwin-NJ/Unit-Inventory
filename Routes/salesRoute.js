@@ -5,12 +5,12 @@ const {
   getAllSales,
   getSingleSale,
 } = require("../Controllers/sales");
-const { Authentication } = require("../Middleware/authenticationMware");
+const { authentication } = require("../Middleware/authenticationMware");
 
 router
   .route("/")
-  .post([Authentication], saleToCustomer)
-  .get([Authentication], getAllSales);
-router.route("/:id").get([Authentication], getSingleSale);
+  .post([authentication], saleToCustomer)
+  .get([authentication], getAllSales);
+router.route("/:id").get([authentication], getSingleSale);
 
 module.exports = router;

@@ -6,14 +6,14 @@ const {
   singlePurchase,
 } = require("../Controllers/Purchase");
 const {
-  Authentication,
-  Authorization,
+  authentication,
+  authorization,
 } = require("../Middleware/authenticationMware");
 
 router
   .route("/")
-  .post([Authentication, Authorization("storeKeeper, admin")], stockPurchase)
+  .post([authentication, authorization("storeKeeper, admin")], stockPurchase)
   .get(AllPurchaseDone);
-router.route("/:id").get([Authentication], singlePurchase);
+router.route("/:id").get([authentication], singlePurchase);
 
 module.exports = router;

@@ -7,17 +7,17 @@ const {
   updateVendorInfo,
 } = require("../Controllers/Vendor");
 const {
-  Authentication,
-  Authorization,
+  authentication,
+  authorization,
 } = require("../Middleware/authenticationMware");
 
 router
   .route("/")
-  .post([Authentication, Authorization("admin")], createVendor)
+  .post([authentication, authorization("admin")], createVendor)
   .get(getAllVendor);
 router
   .route("/:id")
-  .get([Authentication], getSingleVendor)
-  .patch([Authentication], updateVendorInfo);
+  .get([authentication], getSingleVendor)
+  .patch([authentication], updateVendorInfo);
 
 module.exports = router;
