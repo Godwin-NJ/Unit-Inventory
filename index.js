@@ -35,7 +35,7 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-app.use(morgan("tiny"));
+// app.use(morgan("tiny")); //set up a condition to log this only when ur in development
 app.use(express.json());
 app.use(cors());
 app.use(mongoSanitize());
@@ -44,9 +44,9 @@ app.use(helmet());
 app.use(xss());
 
 //this confirms that our API is up
-app.get("/", (req, res) => {
-  res.send("<h1>Api Docs</h1>");
-});
+// app.get("/", (req, res) => {
+//   res.send("<h1>Api Docs</h1>");
+// });
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes
