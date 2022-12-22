@@ -3,4 +3,6 @@
 - [] [Docgen Library] (https://github.com/thedevsaddam/docgen)
 - [] Export Postman Collection
 - [] docgen build -i fileName.json -o index.html
+ --for windows --
+ -windows_amd64 build -i filename.postman_collection.json -o index.html  ( this worked)
 - [] create index.html in public
