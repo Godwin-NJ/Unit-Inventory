@@ -57,6 +57,8 @@ app.use("/api/v1/customer", customerRoute);
 app.use("/api/v1/sales", salesRoute);
 app.use("/api/v1/user", authRouter);
 
+app.use(express.static("public"));
+
 app.use(NotFoundMiddleware);
 app.use(errorHandler);
 
