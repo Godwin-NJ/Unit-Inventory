@@ -14,9 +14,8 @@ services:
   mongodb:
     image: mongo
     restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=sa
-      - MONGO_INITDB_ROOT_PASSWORD=unitExcel747
+    env_file: 
+      - ./mongo.env
     volumes:
       - mongo-db:/data/db
 volumes:
