@@ -6,6 +6,7 @@ const app = express();
 const connectDB = require("./connect");
 const morgan = require("morgan");
 const cors = require("cors");
+const { MONGO_IP, MONGO_PORT } = require("./config/config");
 // security
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
@@ -64,7 +65,8 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 const connectApp = async () => {
-  const url = process.env.MONGO_DB;
+  // const url = process.env.MONGO_DB;
+  const url = `mongodb://${MONGO_IP}:${MONGO_PORT}`;
   await connectDB(url);
   app.listen(port, () => {
     console.log(`app listening on port ${port}...`);
