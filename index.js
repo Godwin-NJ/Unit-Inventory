@@ -66,8 +66,10 @@ app.use(errorHandler);
 const port = process.env.PORT || 3000;
 const connectApp = async () => {
   // const url = process.env.MONGO_DB;
-  const url = `mongodb://${MONGO_IP}:${MONGO_PORT}`;
-  await connectDB(url);
+  const url =
+    "mongodb+srv://sa:unitExcel747@cluster0.4osfo2k.mongodb.net/?retryWrites=true&w=majority";
+  // const url = `mongodb://${MONGO_IP}:${MONGO_PORT}`;
+  connectDB(url);
   app.listen(port, () => {
     console.log(`app listening on port ${port}...`);
   });
