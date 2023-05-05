@@ -4,7 +4,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: unitinventory
+    image: unit-inventory:v1
     # env_file: .env
     environment:
       - PORT=3000
