@@ -1,5 +1,4 @@
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const app = express();
@@ -64,15 +63,17 @@ app.use(NotFoundMiddleware);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
+// const url = process.env.MONGO_DB;
+// const url = `mongodb://${MONGO_IP}:${MONGO_PORT}`;
+const connectDbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.4osfo2k.mongodb.net/?retryWrites=true&w=majority`;
+
 const connectApp = async () => {
-  // const url = process.env.MONGO_DB;
-  const url =
-    "mongodb+srv://sa:unitExcel747@cluster0.4osfo2k.mongodb.net/?retryWrites=true&w=majority";
-  // const url = `mongodb://${MONGO_IP}:${MONGO_PORT}`;
-  connectDB(url);
-  app.listen(port, () => {
-    console.log(`app listening on port ${port}...`);
-  });
+  const DbConnectted = connectDB(connectDbUrl);
+  if (DbConnectted) {
+    app.listen(port, () => {
+      console.log(`app listening on port ${port}...`);
+    });
+  }
 };
 
 connectApp();
