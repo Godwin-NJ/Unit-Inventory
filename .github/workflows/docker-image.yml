@@ -15,7 +15,8 @@ jobs:
         name: checkout work flow
       - uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: godwina/unit-inventory:v1
+          image: godwina/unit-inventory
+          tags: v1
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
